@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <form id="ttWordSubmit">
+        <h1>Chat About Stupid Stuff</h1>
+        <div class="all">
+            <div class="chat">
+                <!-- Insert Chat Stuff Here -->
+                <p id="data"></p>
+            </div>
+            <input type="text" name="message" class="msg" placeholder="Enter your message" />
+            <button type="submit" id="enterMessage">Enter</button>
+        </div>
+        <!--<button id="refresh">Refresh</button>-->
+    </form>
+    <script>
+        $(document).ready(function() {
+
+            window.setInterval(function() {
+                $.ajax({
+                    method: "GET",
+                    url: "api/message",
+                    success: function(data) {
+                        var newMsg = "";
+                        for(var i=0;i<data.length;i++) {
+                            newMsg = newMsg + " <br> "+ data[i]['time'] + "&nbsp;&nbsp;&nbsp;" + data[i]['author'] + " : " + data[i]['content'];
+                        }
+                        $("#data").html(newMsg);
+                    }
+                });
+            }, 1000);
+
+            $("#ttWordSubmit").on("submit", function(evt) {
+                evt.preventDefault();
+                $.ajax({
+                    method: "POST",
+                    url: "api/message",
+                    data: {
+                        "author": getUser(),
+                        "content": $(".msg").val()
+                    },
+                    success: function(data) {
+                        $(".msg").val('');
+                        console.log(data);
+                    }
+                });
+
+                return false;
+            });
+
+        });
+    </script>
+    <script src="chatFunctions.js"></script>
+</body>
+
+</html>

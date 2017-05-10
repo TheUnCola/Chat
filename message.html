@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script ></script>
+</head>
+<div>
+    <form>
+        Username: <input type="text" name="userName"/>
+        Message: <input type="textarea" name="message">
+        <input type="submit" value="Submit"/>
+    </form>
+    <script>
+     $(document).ready(function(){
+        $.ajax({method: "GET", url:"api/message", success: function(data) { $("#something").html(data)}});
+     });
+    </script>
+</div>
+
+</html>
